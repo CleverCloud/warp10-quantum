@@ -233,140 +233,140 @@
   </template>
 
   <script>
-      /* global QuantumModule */
+    // global QuantumModule */
 
-    Polymer({
+    class QuantumApp extends Polymer.mixinBehaviors([QuantumModule], Polymer.Element) {
+      static get is() {
+        return 'quantum-app';
+      }
 
-      is: 'quantum-app',
-
-      behaviors: [
-        QuantumModule,
-      ],
-
-      properties: {
-
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged',
-        },
-
-        route: {
-          type: Object,
-          observer: '_routeChanged',
-        },
-        _pagesWithBackendChoice: {
-          type: Array,
-          value: ['warpscript', 'find', 'fetch', 'update', 'delete'],
-        },
-        _chooseBackendHidden: {
-          type: Boolean,
-          computed: '_isChooseBackendHidden(page, _pagesWithBackendChoice)',
-        },
-
-        /**
-         * Parameters to pass to each page
-         */
-        params: {
-          type: Object,
-          value: function() {
-            return {};
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
           },
-        },
-      },
 
-      observers: [
-        '_routePageChanged(routeData.page)',
-        '_routePayloadChanged(routePayloadData.payload)',
-        '_routeBackendChanged(routeBackendData.backendInfo)',
-      ],
+          route: {
+            type: Object,
+            observer: '_routeChanged',
+          },
+          _pagesWithBackendChoice: {
+            type: Array,
+            value: ['warpscript', 'find', 'fetch', 'update', 'delete'],
+          },
+          _chooseBackendHidden: {
+            type: Boolean,
+            computed: '_isChooseBackendHidden(page, _pagesWithBackendChoice)',
+          },
+
+          /**
+           * Parameters to pass to each page
+           */
+          params: {
+            type: Object,
+            value() {
+              return {};
+            },
+          },
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+          '_routePayloadChanged(routePayloadData.payload)',
+          '_routeBackendChanged(routeBackendData.backendInfo)',
+        ];
+      }
 
 
-      /* **********************************************************************/
-      /* Computed properties
-      /* **********************************************************************/
-      _isChooseBackendHidden: function() {
+      // **********************************************************************
+      // Computed properties
+      // **********************************************************************
+      _isChooseBackendHidden() {
         return (this._pagesWithBackendChoice.indexOf(this.page) < 0);
-      },
+      }
 
-      /* **********************************************************************/
-      /* Observers
-      /* **********************************************************************/
-      _routeChanged: function(route) {
+      // **********************************************************************
+      // Observers
+      // **********************************************************************
+      _routeChanged(route) {
         console.debug('[quantum-app] _routeChanged', route);
-      },
+      }
 
-      _routePageChanged: function(page) {
+      _routePageChanged(page) {
         console.debug('[quantum-app] _routePageChanged', page);
         this.page = page || 'warpscript';
-      },
+      }
 
-      _routePayloadChanged: function(payload) {
+      _routePayloadChanged(payload) {
         console.debug('[quantum-app] _routePayloadChanged', this.routePayloadData.payload);
-      },
+      }
 
-      _routeBackendChanged: function(backend) {
+      _routeBackendChanged(backend) {
         console.debug('[quantum-app] _routeBackendChanged', this.routeBackendData.backend);
-      },
+      }
 
-      _pageChanged: function(page) {
+      _pageChanged(page) {
         console.debug('[quantum-app] _pageChanged', page);
         // load page import on demand.
         this.importHref(
           this.resolveUrl('../bower_components/warp10-quantum-elements/quantum-' + page + '.html'), null, null, true);
-      },
+      }
 
-      _payloadChanged: function(payload) {
+      _payloadChanged(payload) {
         console.debug('[quantum-app] _payloadChanged', payload);
         this.fire('payload-change', payload);
-      },
+      }
 
 
-      /* ************************************************************************/
-      /* Event listeners
-      /* ************************************************************************/
-      _handlePayloadDecoded: function(evt, payload) {
+      // ************************************************************************
+      // Event listeners
+      // ************************************************************************
+      _handlePayloadDecoded(evt, payload) {
         console.debug('[quantum-app] _handlePayloadDecoded', payload);
         if (this.page === 'warpscript' || this.page === 'plot') {
           this._lastWarpscript = this.routePayloadData.payload;
           console.debug('[quantum-app] _routePayloadChanged - _lastWarpscript', this._lastWarpscript);
         }
-      },
-      _handleBackendDecoded: function(evt, backend) {
+      }
+      _handleBackendDecoded(evt, backend) {
         console.debug('[quantum-app] _handleBackendDecoded', backend);
-      },
-      _handleGoToPlot: function(evt, params) {
+      }
+      _handleGoToPlot(evt, params) {
         console.debug('[quantum-app] _handleGoToPlot', params);
         this.warpscript = params.warpscript;
         this.stack = params.stack;
         this._goToPage('plot', true);
-      },
-      _handleGoToWarpScript: function(evt, params) {
+      }
+      _handleGoToWarpScript(evt, params) {
         console.debug('[quantum-app] _handleGoToWarpScript', params);
         this._goToPageWithParams('warpscript', params);
-      },
-      _handleSharedCode: function(evt, code) {
+      }
+      _handleSharedCode(evt, code) {
         this.payload = code;
         this._goToPage('warpscript', true);
-      },
-      _handleSharedResult: function(evt, result) {
+      }
+      _handleSharedResult(evt, result) {
         console.debug('[quantum-app] _handleSharedResult', result);
         this.payload = result;
         this._goToPage('warpscript', true);
-      },
-      _handleCancelledDeletedSharedCode: function(evt, snapshot) {
+      }
+      _handleCancelledDeletedSharedCode(evt, snapshot) {
         this._goToPageWithRoute('shared-code', [snapshot.snapshotId, snapshot.snapshotSecret] );
-      },
-      _handleDeletedSharedCode: function(evt, snapshot) {
+      }
+      _handleDeletedSharedCode(evt, snapshot) {
         this._goToPageWithRoute('warpscript', [] );
-      },
-      _handleCancelledDeletedSharedResult: function(evt, snapshot) {
+      }
+      _handleCancelledDeletedSharedResult(evt, snapshot) {
         this._goToPageWithRoute('shared-result', [snapshot.snapshotId, snapshot.snapshotSecret] );
-      },
-      _handleDeletedSharedResult: function(evt, snapshot) {
+      }
+      _handleDeletedSharedResult(evt, snapshot) {
         this._goToPageWithRoute('warpscript', [] );
-      },
-      _doChangePage: function(evt) {
+      }
+      _doChangePage(evt) {
         console.debug('[quantum-app] _doChangePage - current page', this.page);
         var pageId = evt.target.getAttribute('name');
         if (pageId === 'warpscript' || pageId === 'plot' ) {
@@ -375,9 +375,9 @@
         } else {
           this._goToPage(pageId);
         }
-      },
+      }
 
-      _goToPage: function(pageId, keepPayload) {
+      _goToPage(pageId, keepPayload) {
         console.debug('[quantum-app] _goToPage', pageId, keepPayload);
         var location = '#/'+pageId+'/';
 
@@ -388,23 +388,24 @@
 
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
-      },
+      }
 
-      _goToPageWithRoute: function(pageId, params) {
+      _goToPageWithRoute(pageId, params) {
         console.debug('[quantum-app] _goToPageWithRoute', pageId, params);
         var location = '#/'+pageId+'/'+params.join('/');
 
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
-      },
+      }
 
-      _goToPageWithParams: function(pageId, params) {
+      _goToPageWithParams(pageId, params) {
         var location = '#/'+pageId;
         this.params = params;
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
-      },
-      ready: function() {
+      }
+
+      ready() {
         if (!this.configuredBackends || this.configuredBackends.length == 0) {
           this.configuredBackends=[{
             'id': 'local',
@@ -419,10 +420,11 @@
           }];
         }
         console.debug('[quantum-app] ready - configuredBackends', this.configuredBackends);
-      },
+      }
+    }
 
-    });
-
+    // Register custom element definition using standard platform API
+    customElements.define(QuantumApp.is, QuantumApp);
   </script>
 
 </dom-module>
