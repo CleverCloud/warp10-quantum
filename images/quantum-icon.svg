@@ -14,11 +14,11 @@
    height="750"
    id="svg3544"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="favicon.svg"
-   inkscape:export-filename="/home/horacio/cityzendata/git/website/assets/favicon.png"
-   inkscape:export-xdpi="3.8399999"
-   inkscape:export-ydpi="3.8399999">
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="quantum-icon.svg"
+   inkscape:export-filename="C:\Users\horac\Documents\git\cityzendata\warp10-quantum\images\quantum-icon-96.png"
+   inkscape:export-xdpi="11.52"
+   inkscape:export-ydpi="11.52">
   <defs
      id="defs3546">
     <clipPath
@@ -80,10 +80,10 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1855"
-     inkscape:window-height="1056"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
+     inkscape:window-width="1563"
+     inkscape:window-height="979"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      borderlayer="true" />
   <metadata
@@ -94,7 +94,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
