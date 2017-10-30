@@ -160,7 +160,8 @@
             hidden="{{_chooseBackendHidden}}">
           <quantum-backend-chooser
             backend="{{backend}}"
-            configured-backends="{{configuredBackends}}"></quantum-backend-chooser>
+            configured-backends="{{configuredBackends}}"
+            debug="[[debug]]"></quantum-backend-chooser>
         </paper-material>
 
 
@@ -178,6 +179,7 @@
                 backend="[[backend]]"
                 params="[[params]]"
                 theme="chaos"
+                debug="[[debug]]"
                 on-plot="_handleGoToPlot"
                 show-permalink></quantum-warpscript>
             <quantum-plot
@@ -185,23 +187,27 @@
                 selected="[[page]]"
                 warpscript="[[payload]]"
                 stack="[[stack]]"
-                on-edit="_handleGoToWarpScript"
-                backend="[[backend]]" ></quantum-plot>
+                backend="[[backend]]"
+                debug="[[debug]]"
+                on-edit="_handleGoToWarpScript"></quantum-plot>
             <quantum-shared-result
                 name="shared-result"
                 snapshot-id="{{routePayloadData.payload}}"
                 selected="[[page]]"
+                debug="[[debug]]"
                 on-shared-result="_handleSharedResult"></quantum-shared-result>
             <quantum-shared-code
                 name="shared-code"
                 snapshot-id="{{routePayloadData.payload}}"
-                selected="[[page]]"
+                selected="[[page]]
+                debug="[[debug]]""
                 on-shared-code="_handleSharedCode"></quantum-shared-code>
             <quantum-delete-shared-code
                 name="delete-shared-code"
                 snapshot-id="{{routePayloadData.payload}}"
                 snapshot-secret="{{routeBackendData.backend}}"
                 selected="[[page]]"
+                debug="[[debug]]"
                 on-cancel-delete="_handleCancelledDeletedSharedCode"
                 on-deleted="_handleDeletedSharedCode"></quantum-delete-shared-code>
             <quantum-delete-shared-result
@@ -209,20 +215,25 @@
                 snapshot-id="{{routePayloadData.payload}}"
                 snapshot-secret="{{routeBackendData.backend}}"
                 selected="[[page]]"
+                debug="[[debug]]"
                 on-cancel-delete="_handleCancelledDeletedSharedResult"
                 on-deleted="_handleDeletedSharedResult"></quantum-delete-shared-result>
             <quantum-find
                 name="find"
-                backend="[[backend]]"></quantum-find>
+                backend="[[backend]]"
+                debug="[[debug]]"></quantum-find>
             <quantum-fetch
                 name="fetch"
-                backend="[[backend]]"></quantum-fetch>
+                backend="[[backend]]"
+                debug="[[debug]]"></quantum-fetch>
             <quantum-update
                 name="update"
-                backend="[[backend]]"></quantum-update>
+                backend="[[backend]]"
+                debug="[[debug]]"></quantum-update>
             <quantum-delete
                 name="delete"
-                backend="[[backend]]"></quantum-delete>
+                backend="[[backend]]"
+                debug="[[debug]]"></quantum-delete>
           </iron-pages>
         </paper-material>
 
@@ -251,6 +262,10 @@
           route: {
             type: Object,
             observer: '_routeChanged',
+          },
+          debug: {
+            type: Boolean,
+            value: false,
           },
           _pagesWithBackendChoice: {
             type: Array,
