@@ -3,7 +3,7 @@
 @copyright (c) 2016 Cityzen Data
 @license Apache 2.0
 -->
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
@@ -26,7 +26,7 @@
 
 <link rel="import" href="../bower_components/warp10-quantum-elements/quantum-backend-chooser.html">
 <link rel="import" href="../bower_components/warp10-quantum-elements/quantum-permalink.html">
-<link rel="import" href="../bower_components/warp10-quantum-elements/quantum-module-behavior.html">
+<link rel="import" href="../bower_components/warp10-quantum-elements/quantum-module-mixin.html">
 
 
 <dom-module id="quantum-app">
@@ -47,7 +47,6 @@
         background-color: var(--app-primary-color);
         color: #fff;
       }
-
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
@@ -56,15 +55,12 @@
         margin: 15px;
         background-color: var(--app-background-color);
       }
-
       app-drawer {
         --app-drawer-width: 192px;
       }
-
       .drawer-list {
         margin: 0 20px;
       }
-
       .drawer-list a {
         display: block;
         padding: 0 16px;
@@ -72,30 +68,24 @@
         text-decoration: none;
         color: var(--app-secondary-color);
       }
-
       .drawer-list h3 {
         padding: 0 16px;
         line-height: 40px;
       }
-
       .drawer-list a.iron-selected {
         color: black;
         font-weight: bold;
       }
-
       .drawer-list a.subroute {
         padding-left: 32px;
       }
-
       iron-selector a {
         cursor: pointer;
       }
-
       iron-selector a:hover {
         background-color: var(--app-primary-color);
         color: #fff !important;
       }
-
       *[hidden] {
         display: none
       }
@@ -104,28 +94,28 @@
 
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route
-      route="{{route}}"
-      pattern="/:page"
-      data="{{routeData}}"
-      tail="{{routePayload}}"></app-route>
+        route="{{route}}"
+        pattern="/:page"
+        data="{{routeData}}"
+        tail="{{routePayload}}"></app-route>
     <app-route
-      route="{{routePayload}}"
-      pattern="/:payload"
-      data="{{routePayloadData}}"
-      tail="{{routeBackend}}"></app-route>
+        route="{{routePayload}}"
+        pattern="/:payload"
+        data="{{routePayloadData}}"
+        tail="{{routeBackend}}"></app-route>
 
     <app-route
-      route="{{routeBackend}}"
-      pattern="/:backend"
-      data="{{routeBackendData}}"></app-route>
+        route="{{routeBackend}}"
+        pattern="/:backend"
+        data="{{routeBackendData}}"></app-route>
 
     <quantum-permalink-decoder
-      encoded-payload="[[routePayloadData.payload]]"
-      encoded-backend="[[routeBackendData.backend]]"
-      decoded-payload="{{payload}}"
-      decoded-backend="{{backend}}"
-      on-payload-decoded="_handlePayloadDecoded"
-      on-backend-decoded="_handleBackendDecoded"></quantum-permalink-decoder>
+        encoded-payload="[[routePayloadData.payload]]"
+        encoded-backend="[[routeBackendData.backend]]"
+        decoded-payload="{{payload}}"
+        decoded-backend="{{backend}}"
+        on-payload-decoded="_handlePayloadDecoded"
+        on-backend-decoded="_handleBackendDecoded"></quantum-permalink-decoder>
 
 
     <app-drawer-layout fullbleed force-narrow>
@@ -138,11 +128,11 @@
         </app-toolbar>
 
         <iron-selector
-          selected="[[page]]"
-          attr-for-selected="name"
-          class="drawer-list"
-          role="navigation">
-
+            selected="[[page]]"
+            attr-for-selected="name"
+            class="drawer-list"
+            role="navigation">
+          
           <h3>Interactive:</h3>
           <a name="warpscript" on-click="_doChangePage" drawer-toggle>WarpScript</a>
           <a name="update" on-click="_doChangePage" drawer-toggle>Update</a>
@@ -166,8 +156,8 @@
         </app-header>
 
         <paper-material
-          elevation="1"
-          hidden="{{_chooseBackendHidden}}">
+            elevation="1"
+            hidden="{{_chooseBackendHidden}}">
           <quantum-backend-chooser
             backend="{{backend}}"
             configured-backends="{{configuredBackends}}"></quantum-backend-chooser>
@@ -176,71 +166,63 @@
 
         <paper-material elevation="1">
           <iron-pages
-            role="main"
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="warpscript">
+              role="main"
+              selected="[[page]]"
+              attr-for-selected="name"
+              fallback-selection="warpscript">
             <quantum-warpscript
-              name="warpscript"
-              selected="[[page]]"
-              application="warpscript"
-              warpscript="[[payload]]"
-              backend="[[backend]]"
-              params="[[params]]"
-              theme="chaos"
-              on-plot="_handleGoToPlot"
-              on-map="_handleGoToMap"
-              show-permalink></quantum-warpscript>
+                name="warpscript"
+                selected="[[page]]"
+                application="warpscript"
+                warpscript="[[payload]]"
+                backend="[[backend]]"
+                params="[[params]]"
+                theme="chaos"
+                on-plot="_handleGoToPlot"
+                show-permalink></quantum-warpscript>
             <quantum-plot
-              name="plot"
-              selected="[[page]]"
-              warpscript="[[payload]]"
-              stack="[[stack]]"
-              on-edit="_handleGoToWarpScript"
-              backend="[[backend]]"></quantum-plot>
-            <quantum-map
-              name="map"
-              selected="[[page]]"
-              warpscript="[[payload]]"
-              stack="[[stack]]"
-              on-edit="_handleGoToWarpScript"
-              backend="[[backend]]"></quantum-map>
+                name="plot"
+                selected="[[page]]"
+                warpscript="[[payload]]"
+                stack="[[stack]]"
+                on-edit="_handleGoToWarpScript"
+                backend="[[backend]]" ></quantum-plot>
             <quantum-shared-result
-              name="shared-result"
-              snapshot-id="{{routePayloadData.payload}}"
-              selected="[[page]]"
-              on-shared-result="_handleSharedResult"></quantum-shared-result>
+                name="shared-result"
+                snapshot-id="{{routePayloadData.payload}}"
+                selected="[[page]]"
+                on-shared-result="_handleSharedResult"></quantum-shared-result>
             <quantum-shared-code
-              name="shared-code"
-              snapshot-id="{{routePayloadData.payload}}"
-              selected="[[page]]"
-              on-shared-code="_handleSharedCode"></quantum-shared-code>
+                name="shared-code"
+                snapshot-id="{{routePayloadData.payload}}"
+                selected="[[page]]"
+                on-shared-code="_handleSharedCode"></quantum-shared-code>
             <quantum-delete-shared-code
-              name="delete-shared-code"
-              snapshot-id="{{routePayloadData.payload}}"
-              snapshot-secret="{{routeBackendData.backend}}"
-              selected="[[page]]"
-              on-cancel-delete="_handleCancelledDeletedSharedCode"
-              on-deleted="_handleDeletedSharedCode"></quantum-delete-shared-code>
+                name="delete-shared-code"
+                snapshot-id="{{routePayloadData.payload}}"
+                snapshot-secret="{{routeBackendData.backend}}"
+                selected="[[page]]"
+                on-cancel-delete="_handleCancelledDeletedSharedCode"
+                on-deleted="_handleDeletedSharedCode"></quantum-delete-shared-code>
             <quantum-delete-shared-result
-              name="delete-shared-result"
-              snapshot-id="{{routePayloadData.payload}}"
-              snapshot-secret="{{routeBackendData.backend}}"
-              selected="[[page]]"
-              on-cancel-delete="_handleCancelledDeletedSharedResult"
-              on-deleted="_handleDeletedSharedResult"></quantum-delete-shared-result>
+                name="delete-shared-result"
+                snapshot-id="{{routePayloadData.payload}}"
+                snapshot-secret="{{routeBackendData.backend}}"
+                selected="[[page]]"
+                on-cancel-delete="_handleCancelledDeletedSharedResult"
+                on-deleted="_handleDeletedSharedResult"></quantum-delete-shared-result>
             <quantum-find
-              name="find"
-              backend="[[backend]]"></quantum-find>
+                name="find"
+                backend="[[backend]]"></quantum-find>
             <quantum-fetch
-              name="fetch"
-              backend="[[backend]]"></quantum-fetch>
+                name="fetch"
+                backend="[[backend]]"></quantum-fetch>
             <quantum-update
-              name="update"
-              backend="[[backend]]"></quantum-update>
+                name="update"
+                backend="[[backend]]"></quantum-update>
             <quantum-delete
-              name="delete"
-              backend="[[backend]]"></quantum-delete>
+                name="delete"
+                backend="[[backend]]"></quantum-delete>
           </iron-pages>
         </paper-material>
 
@@ -251,8 +233,9 @@
   </template>
 
   <script>
-    /* global QuantumModule */
-    class QuantumApp extends Polymer.mixinBehaviors([QuantumModule], Polymer.Element) {
+    /* globals Warp10 */
+    // eslint-disable-next-line new-cap
+    class QuantumApp extends Warp10.QuantumModuleMixin(Polymer.Element) {
       static get is() {
         return 'quantum-app';
       }
@@ -277,165 +260,120 @@
             type: Boolean,
             computed: '_isChooseBackendHidden(page, _pagesWithBackendChoice)',
           },
-          debug: {
-            type: Boolean,
-            value: false,
-          },
 
           /**
            * Parameters to pass to each page
            */
           params: {
             type: Object,
-            value: function () {
+            value() {
               return {};
             },
           },
         };
       }
+
       static get observers() {
         return [
           '_routePageChanged(routeData.page)',
           '_routePayloadChanged(routePayloadData.payload)',
           '_routeBackendChanged(routeBackendData.backendInfo)',
-        ]
+        ];
       }
 
-      /* **********************************************************************/
-      /* Computed properties
-      /* **********************************************************************/
-      _isChooseBackendHidden () {
+
+      // **********************************************************************
+      // Computed properties
+      // **********************************************************************
+      _isChooseBackendHidden() {
         return (this._pagesWithBackendChoice.indexOf(this.page) < 0);
       }
 
-      /* **********************************************************************/
-      /* Observers
-      /* **********************************************************************/
-      _routeChanged (route) {
-        if(this.debug) {
-          console.debug('[quantum-app] _routeChanged', route);
-        }
+      // **********************************************************************
+      // Observers
+      // **********************************************************************
+      _routeChanged(route) {
+        console.debug('[quantum-app] _routeChanged', route);
       }
 
-      _routePageChanged (page) {
-        if(this.debug) {
-          console.debug('[quantum-app] _routePageChanged', page);
-        }
+      _routePageChanged(page) {
+        console.debug('[quantum-app] _routePageChanged', page);
         this.page = page || 'warpscript';
       }
 
-      _routePayloadChanged (payload) {
-        if(this.debug) {
-          console.debug('[quantum-app] _routePayloadChanged', this.routePayloadData.payload);
-        }
+      _routePayloadChanged(payload) {
+        console.debug('[quantum-app] _routePayloadChanged', this.routePayloadData.payload);
       }
 
-      _routeBackendChanged (backend) {
-        if(this.debug) {
-          console.debug('[quantum-app] _routeBackendChanged', this.routeBackendData.backend);
-        }
+      _routeBackendChanged(backend) {
+        console.debug('[quantum-app] _routeBackendChanged', this.routeBackendData.backend);
       }
 
-      _pageChanged (page) {
-        if(this.debug) {
-          console.debug('[quantum-app] _pageChanged', page);
-        }
+      _pageChanged(page) {
+        console.debug('[quantum-app] _pageChanged', page);
         // load page import on demand.
-        this.importHref(
+        Polymer.importHref(
           this.resolveUrl('../bower_components/warp10-quantum-elements/quantum-' + page + '.html'), null, null, true);
       }
 
-      _payloadChanged (payload) {
-        if(this.debug) {
-          console.debug('[quantum-app] _payloadChanged', payload);
-        }
-        this.fire('payload-change', payload);
+      _payloadChanged(payload) {
+        console.debug('[quantum-app] _payloadChanged', payload);
+        this.dispatchEvent(new CustomEvent('payload-change',
+          {detail: {
+            payload: payload,
+          }}));
       }
 
-      /* ************************************************************************/
-      /* Event listeners
-      /* ************************************************************************/
-      _handlePayloadDecoded (evt, payload) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handlePayloadDecoded', payload);
-        }
+
+      // ************************************************************************
+      // Event listeners
+      // ************************************************************************
+      _handlePayloadDecoded(evt, payload) {
+        console.debug('[quantum-app] _handlePayloadDecoded', payload);
         if (this.page === 'warpscript' || this.page === 'plot') {
           this._lastWarpscript = this.routePayloadData.payload;
-          if(this.debug) {
-            console.debug('[quantum-app] _routePayloadChanged - _lastWarpscript', this._lastWarpscript);
-          }
+          console.debug('[quantum-app] _routePayloadChanged - _lastWarpscript', this._lastWarpscript);
         }
       }
-
-      _handleBackendDecoded (evt, backend) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handleBackendDecoded', backend);
-        }
+      _handleBackendDecoded(evt, backend) {
+        console.debug('[quantum-app] _handleBackendDecoded', backend);
       }
-
-      _handleGoToPlot (evt, params) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handleGoToPlot', params);
-        }
+      _handleGoToPlot(evt, params) {
+        console.debug('[quantum-app] _handleGoToPlot', params);
         this.warpscript = params.warpscript;
         this.stack = params.stack;
         this._goToPage('plot', true);
       }
-
-      _handleGoToMap (evt, params) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handleGoToMap', params);
-        }
-        this.warpscript = params.warpscript;
-        this.stack = params.stack;
-        this._goToPage('map', true);
-      }
-
-      _handleGoToWarpScript (evt, params) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handleGoToWarpScript', params);
-        }
+      _handleGoToWarpScript(evt, params) {
+        console.debug('[quantum-app] _handleGoToWarpScript', params);
         this._goToPageWithParams('warpscript', params);
       }
-
-      _handleSharedCode (evt, code) {
+      _handleSharedCode(evt, code) {
         this.payload = code;
         this._goToPage('warpscript', true);
       }
-
-      _handleSharedResult (evt, result) {
-        if(this.debug) {
-          console.debug('[quantum-app] _handleSharedResult', result);
-        }
+      _handleSharedResult(evt, result) {
+        console.debug('[quantum-app] _handleSharedResult', result);
         this.payload = result;
         this._goToPage('warpscript', true);
       }
-
-      _handleCancelledDeletedSharedCode (evt, snapshot) {
-        this._goToPageWithRoute('shared-code', [snapshot.snapshotId, snapshot.snapshotSecret]);
+      _handleCancelledDeletedSharedCode(evt, snapshot) {
+        this._goToPageWithRoute('shared-code', [snapshot.snapshotId, snapshot.snapshotSecret] );
       }
-
-      _handleDeletedSharedCode (evt, snapshot) {
-        this._goToPageWithRoute('warpscript', []);
+      _handleDeletedSharedCode(evt, snapshot) {
+        this._goToPageWithRoute('warpscript', [] );
       }
-
-      _handleCancelledDeletedSharedResult (evt, snapshot) {
-        this._goToPageWithRoute('shared-result', [snapshot.snapshotId, snapshot.snapshotSecret]);
+      _handleCancelledDeletedSharedResult(evt, snapshot) {
+        this._goToPageWithRoute('shared-result', [snapshot.snapshotId, snapshot.snapshotSecret] );
       }
-
-      _handleDeletedSharedResult (evt, snapshot) {
-        this._goToPageWithRoute('warpscript', []);
+      _handleDeletedSharedResult(evt, snapshot) {
+        this._goToPageWithRoute('warpscript', [] );
       }
-
-      _doChangePage (evt) {
-        if(this.debug) {
-          console.debug('[quantum-app] _doChangePage - current page', this.page);
-        }
-        let pageId = evt.target.getAttribute('name');
-        if (pageId === 'warpscript' || pageId === 'plot') {
-          if(this.debug) {
-            console.debug('[quantum-app] _doChangePage - is warpscript or plot', this._lastWarpscript);
-          }
+      _doChangePage(evt) {
+        console.debug('[quantum-app] _doChangePage - current page', this.page);
+        var pageId = evt.target.getAttribute('name');
+        if (pageId === 'warpscript' || pageId === 'plot' ) {
+          console.debug('[quantum-app] _doChangePage - is warpscript or plot', this._lastWarpscript);
           this._goToPage(pageId, true);
         } else {
           this._goToPage(pageId);
@@ -443,61 +381,54 @@
       }
 
       _goToPage(pageId, keepPayload) {
-        if(this.debug) {
-          console.debug('[quantum-app] _goToPage', pageId, keepPayload);
-        }
-        let location = '#/' + pageId + '/';
+        console.debug('[quantum-app] _goToPage', pageId, keepPayload);
+        var location = '#/'+pageId+'/';
+
         if (keepPayload) {
           location += this._lastWarpscript;
         }
-        location += '/' + this.routeBackendData.backend;
+        location += '/'+this.routeBackendData.backend;
 
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
 
-      _goToPageWithRoute (pageId, params) {
-        if(this.debug) {
-          console.debug('[quantum-app] _goToPageWithRoute', pageId, params);
-        }
-        let location = '#/' + pageId + '/' + params.join('/');
+      _goToPageWithRoute(pageId, params) {
+        console.debug('[quantum-app] _goToPageWithRoute', pageId, params);
+        var location = '#/'+pageId+'/'+params.join('/');
 
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
 
-     _goToPageWithParams (pageId, params) {
-        let location = '#/' + pageId;
+      _goToPageWithParams(pageId, params) {
+        var location = '#/'+pageId;
         this.params = params;
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
 
-      ready () {
+      ready() {
         super.ready();
-        if (!this.configuredBackends || this.configuredBackends.length === 0) {
-          this.configuredBackends = [{
-            id: 'local',
-            label: 'Local Warp 10',
-            url: 'http://127.0.0.1:8080/api/v0',
-            execEndpoint: '/exec',
-            findEndpoint: '/find',
-            fetchEndpoint: '/fetch',
-            updateEndpoint: '/update',
-            deleteEndpoint: '/delete',
-            headerName: 'X-Warp10',
+        if (!this.configuredBackends || this.configuredBackends.length == 0) {
+          this.configuredBackends=[{
+            'id': 'local',
+            'label': 'Local Warp 10',
+            'url': 'http://127.0.0.1:8080/api/v0',
+            'execEndpoint': '/exec',
+            'findEndpoint': '/find',
+            'fetchEndpoint': '/fetch',
+            'updateEndpoint': '/update',
+            'deleteEndpoint': '/delete',
+            'headerName': 'X-Warp10',
           }];
         }
-        if(this.debug) {
-          console.debug('[quantum-app] ready - configuredBackends', this.configuredBackends);
-        }
+        console.debug('[quantum-app] ready - configuredBackends', this.configuredBackends);
       }
     }
 
-
     // Register custom element definition using standard platform API
     customElements.define(QuantumApp.is, QuantumApp);
-
   </script>
 
 </dom-module>
