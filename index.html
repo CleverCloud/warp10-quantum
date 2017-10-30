@@ -17,33 +17,22 @@
   <link rel="manifest" href="./manifest.json">
 
   <script>
+    // Register the base URL
+    const baseUrl = document.querySelector('base').href;
 
-    // setup Polymer options
-    window.Polymer = {lazyRegister: true, dom: 'shadow'};
-
-    // load webcomponents polyfills
-    (function() {
-      if ('registerElement' in document
-          && 'import' in document.createElement('link')
-          && 'content' in document.createElement('template')) {
-        // browser has web components
-      } else {
-        // polyfill web components
-        var e = document.createElement('script');
-        e.src = './bower_components/webcomponentsjs/webcomponents-lite.min.js';
-        document.head.appendChild(e);
-      }
-    })();
-
-    // load pre-caching service worker
+    // Load and register pre-caching Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./service-worker.js');
+        navigator.serviceWorker.register(baseUrl + 'service-worker.js');
       });
     }
-
   </script>
 
+  <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+
+  <!-- Load your application shell -->
   <link rel="import" href="./src/quantum-app.html">
 
   <style>
