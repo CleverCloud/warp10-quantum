@@ -3,7 +3,7 @@
 @copyright (c) 2016 Cityzen Data
 @license Apache 2.0
 -->
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
@@ -26,7 +26,7 @@
 
 <link rel="import" href="../bower_components/warp10-quantum-elements/quantum-backend-chooser.html">
 <link rel="import" href="../bower_components/warp10-quantum-elements/quantum-permalink.html">
-<link rel="import" href="../bower_components/warp10-quantum-elements/quantum-module-behavior.html">
+<link rel="import" href="../bower_components/warp10-quantum-elements/quantum-module-mixin.html">
 
 
 <dom-module id="quantum-app">
@@ -233,9 +233,9 @@
   </template>
 
   <script>
-    // global QuantumModule */
-
-    class QuantumApp extends Polymer.mixinBehaviors([QuantumModule], Polymer.Element) {
+    /* globals Warp10 */
+    // eslint-disable-next-line new-cap
+    class QuantumApp extends Warp10.QuantumModuleMixin(Polymer.Element) {
       static get is() {
         return 'quantum-app';
       }
@@ -312,13 +312,16 @@
       _pageChanged(page) {
         console.debug('[quantum-app] _pageChanged', page);
         // load page import on demand.
-        this.importHref(
+        Polymer.importHref(
           this.resolveUrl('../bower_components/warp10-quantum-elements/quantum-' + page + '.html'), null, null, true);
       }
 
       _payloadChanged(payload) {
         console.debug('[quantum-app] _payloadChanged', payload);
-        this.fire('payload-change', payload);
+        this.dispatchEvent(new CustomEvent('payload-change',
+          {detail: {
+            payload: payload,
+          }}));
       }
 
 
@@ -406,6 +409,7 @@
       }
 
       ready() {
+        super.ready();
         if (!this.configuredBackends || this.configuredBackends.length == 0) {
           this.configuredBackends=[{
             'id': 'local',
