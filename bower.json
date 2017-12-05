@@ -49,7 +49,7 @@
     "granite-spinner": "LostInBrittany/granite-spinner#^2.0.0",
     "warp10-iron": "cityzendata/warp10-iron#^2.0.0-b3",
     "warp10-quantum-elements": "cityzendata/warp10-quantum-elements#^2.0.0-b1",
-    "warp10-quantumviz": "cityzendata/warp10-quantumviz#^2.1.0-b6"
+    "warp10-quantumviz": "cityzendata/warp10-quantumviz#^2.1.0-b8"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"
