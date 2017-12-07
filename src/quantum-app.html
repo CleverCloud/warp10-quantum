@@ -423,8 +423,8 @@
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
 
-      ready() {
-        super.ready();
+      constructor() {
+        super();
         if (!this.configuredBackends || this.configuredBackends.length == 0) {
           this.configuredBackends=[{
             'id': 'local',
@@ -438,7 +438,7 @@
             'headerName': 'X-Warp10',
           }];
         }
-        console.debug('[quantum-app] ready - configuredBackends', this.configuredBackends);
+        console.debug('[quantum-app] ready - constructor', this.configuredBackends);
       }
     }
 
