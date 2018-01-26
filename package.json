@@ -1,0 +1,10 @@
+{
+  "name": "warp10-quantum",
+  "version": "3.0.0-rc1",
+  "scripts": {
+    "install": "bower install && polymer build"
+  },
+  "dependencies": {
+    "polymer-cli": "^1.5.7"
+  }
+}
