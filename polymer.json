@@ -15,6 +15,7 @@
   ],
   "sources": [
     "images/**/*",
+    "bower_components/d3/**",
     "bower_components/font-roboto/fonts/**"
   ],
   "extraDependencies": [
