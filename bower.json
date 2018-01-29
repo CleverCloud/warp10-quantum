@@ -22,7 +22,7 @@
   ],
   "homepage": "http://www.warp10.io",
   "dependencies": {
-    "polymer": "polymer/polymer#^2.0.0",
+    "polymer": "polymer/polymer#~2.2.0",
     "app-layout": "PolymerElements/app-layout#^2.0.0",
     "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0",
     "app-route": "PolymerElements/app-route#^2.0.0",
@@ -47,9 +47,9 @@
     "ace-widget": "LostInBrittany/ace-widget#^1.3.4",
     "granite-alert": "LostInBrittany/granite-alert#^1.0.5",
     "granite-spinner": "LostInBrittany/granite-spinner#^2.0.0",
-    "warp10-iron": "cityzendata/warp10-iron#^2.0.0-b3",
-    "warp10-quantum-elements": "cityzendata/warp10-quantum-elements#^2.0.0-b1",
-    "warp10-quantumviz": "cityzendata/warp10-quantumviz#^2.1.0-b1"
+    "warp10-iron": "cityzendata/warp10-iron#^2.0.0",
+    "warp10-quantum-elements": "cityzendata/warp10-quantum-elements#^2.0.0",
+    "warp10-quantumviz": "cityzendata/warp10-quantumviz#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"
