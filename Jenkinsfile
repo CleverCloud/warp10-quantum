@@ -18,7 +18,6 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        echo "Is a tag commit : ${isItATagCommit()}"
         this.notifyBuild('STARTED', version)
         git credentialsId: 'github', poll: false, url: 'git@github.com:cityzendata/warp10-quantum.git'
         echo "Building ${version}"
@@ -27,6 +26,7 @@ pipeline {
 
     stage('Build') {
       steps {
+        echo '${STAGE_NAME}'
         sh "rm -fr ${env.WORKSPACE}/build"
         sh "rm -fr ${env.WORKSPACE}/bower_components"
         sh 'bower install'
@@ -42,6 +42,9 @@ pipeline {
       steps {
         sh "mkdir -p ${env.WORKSPACE}/build/artifacts"
         sh "tar -czf ${env.WORKSPACE}/build/artifacts/quantum-${version}.tar.gz -C  ${env.WORKSPACE}/build/bundled ."
+        sh "(cd ${env.WORKSPACE}/server/ && ./gradlew shadowJar)"
+        archiveArtifacts "build/artifacts/*.tar.gz"
+        archiveArtifacts "server/build/libs/*.jar"
       }
     }
 
@@ -61,14 +64,18 @@ pipeline {
       when {
         expression { return isItATagCommit() }
       }
-      options {
-        timeout(time: 2, unit: 'HOURS')
-      }
-      input {
-        message 'Should we deploy to Bintray?'
-      }
-      steps {
-        sh 'cd server && ./gradlew bintray -x test'
+      parallel {
+        stage('Deploy to Bintray') {
+          options {
+            timeout(time: 2, unit: 'HOURS')
+          }
+          input {
+            message 'Should we deploy to Bintray?'
+          }
+          steps {
+            sh 'cd server && ./gradlew bintray -x test'
+          }
+        }
       }
     }
   }
@@ -128,7 +135,6 @@ String getVersion() {
 
 boolean isItATagCommit() {
   String lastCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-  print "git show-ref --tags -d | grep ^${lastCommit} | sed -e 's,.* refs/tags/,,' -e 's/\\^{}//'"
   String tag = sh(returnStdout: true, script: "git show-ref --tags -d | grep ^${lastCommit} | sed -e 's,.* refs/tags/,,' -e 's/\\^{}//'").trim()
   return tag != ''
 }
