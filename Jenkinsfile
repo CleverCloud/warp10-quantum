@@ -74,6 +74,7 @@ pipeline {
           }
           steps {
             sh 'cd server && ./gradlew bintray -x test'
+            this.notifyBuild('PUBLISHED', version)
           }
         }
       }
