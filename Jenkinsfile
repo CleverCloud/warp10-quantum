@@ -55,7 +55,7 @@ pipeline {
       steps {
         sshagent(credentials: ['github']) {
           sh "ssh -o StrictHostKeyChecking=no root@${artifactHost} mkdir -p ${artifactPath}/quantum/${version}"
-          sh "scp -p ${env.WORKSPACE}/build/artifacts/quantum-${version}.tar.gz root@${artifactHost}:${artifactPath}/quantum/${version}/quantum.tar.gz"
+          sh "scp -p ${env.WORKSPACE}/build/artifacts/quantum-${version}.tar.gz ansible-staging@${artifactHost}:${artifactPath}/quantum/${version}/quantum.tar.gz"
         }
       }
     }
