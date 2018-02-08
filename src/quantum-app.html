@@ -118,10 +118,9 @@
       route="{{routeBackend}}"
       pattern="/:backend"
       data="{{routeBackendData}}"></app-route>
-
     <quantum-permalink-decoder
-      encoded-payload="[[routePayloadData.payload]]"
-      encoded-backend="[[routeBackendData.backend]]"
+      encoded-payload="{{routePayloadData.payload}}"
+      encoded-backend="{{routeBackendData.backend}}"
       decoded-payload="{{payload}}"
       decoded-backend="{{backend}}"
       on-payload-decoded="_handlePayloadDecoded"
@@ -176,6 +175,7 @@
 
 
         <paper-material elevation="1">
+
           <iron-pages
             role="main"
             selected="[[page]]"
@@ -327,11 +327,11 @@
       }
 
       _routePayloadChanged(payload) {
-        console.debug('[quantum-app] _routePayloadChanged', this.routePayloadData.payload);
+        console.debug('[quantum-app] _routePayloadChanged', this.routePayloadData.payload, payload);
       }
 
       _routeBackendChanged(backend) {
-        console.debug('[quantum-app] _routeBackendChanged', this.routeBackendData.backend);
+        console.debug('[quantum-app] _routeBackendChanged', this.routeBackendData.backend, backend);
       }
 
       _pageChanged(page) {
@@ -356,7 +356,7 @@
       // Event listeners
       // ************************************************************************
       _handlePayloadDecoded(evt, payload) {
-        console.debug('[quantum-app] _handlePayloadDecoded', payload);
+        console.debug('[quantum-app] _handlePayloadDecoded', evt, payload);
         if (this.page === 'warpscript' || this.page === 'plot') {
           this._lastWarpscript = this.routePayloadData.payload;
           console.debug('[quantum-app] _routePayloadChanged - _lastWarpscript', this._lastWarpscript);
@@ -422,9 +422,10 @@
         let location = '#/' + pageId + '/';
 
         if (keepPayload) {
-          location += this._lastWarpscript;
+          location += this._lastWarpscript || this.routePayloadData.payload;
         }
         location += '/' + this.routeBackendData.backend;
+        console.debug('[quantum-app] _goToPage', this._lastWarpscript, this.routeBackendData.backend);
 
         window.history.pushState({}, null, location);
         window.dispatchEvent(new CustomEvent('location-changed'));

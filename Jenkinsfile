@@ -41,6 +41,7 @@ pipeline {
     stage('Package') {
       steps {
         sh "mkdir -p ${env.WORKSPACE}/build/artifacts"
+        sh "cp -R ${env.WORKSPACE}/build/bundled/* ${env.WORKSPACE}/server/src/main/resources/public_html/."
         sh "tar -czf ${env.WORKSPACE}/build/artifacts/quantum-${version}.tar.gz -C  ${env.WORKSPACE}/build/bundled ."
         sh "(cd ${env.WORKSPACE}/server/ && ./gradlew shadowJar)"
         archiveArtifacts "build/artifacts/*.tar.gz"
