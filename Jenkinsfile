@@ -31,7 +31,7 @@ pipeline {
         sh "rm -fr ${env.WORKSPACE}/bower_components"
         sh 'bower install'
         sh 'bower prune'
-        sh 'sed -i -e "s/super();/super();\\n        this.configuredBackends=[\\{\'id\':\'dist\',\'label\':\'Distributed Warp\',\'url\':\'https:\\/\\/warp.cityzendata.net\\/api\\/v0\',\'execEndpoint\':\'\\/exec\',\'findEndpoint\':\'\\/find\',\'fetchEndpoint\':\'\\/fetch\',\'updateEndpoint\':\'\\/update\',\'deleteEndpoint\':\'\\/delete\',\'headerName\':\'X-Warp10\'\\}];/" ./src/quantum-app.html'
+        sh 'sed -i -e "s/ready: function() {/ready: function() \{\n        this.configuredBackends=[{'id':'dist','label':'Local Warp','url':location.protocol+'\/\/'+location.hostname+':8080\/api\/v0','execEndpoint':'\/exec','findEndpoint':'\/find','fetchEndpoint':'\/fetch','updateEndpoint':'\/update','deleteEndpoint':'\/delete','headerName':'X-Warp10'}];/" ./src/quantum-app.html'
         sh "sed -i -e \"s/<title>Warp10 Quantum/<title>Warp10 Quantum - ${version}/\" ./index.html"
         sh 'sed -i -e "s/<quantum-app debug>/<quantum-app>/" ./index.html'
         sh '/usr/local/bin/polymer build'
