@@ -145,8 +145,9 @@ bintray {
   pkg {
     repo = 'generic'
     name = 'quantum'
+    userOrg = 'senx'
     licenses = ['Apache-2.0']
-    vcsUrl = 'https://github.com/cityzendata/warp10-quantum.git'
+    vcsUrl = 'https://github.com/senx/warp10-quantum.git'
     version {
       name = quantumVersion
       released  = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ").format(new Date())
