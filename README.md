@@ -2,7 +2,7 @@
 
 > Note: We have begun to do release notes for Warp 10 Quantum, please [read them](./RELEASE_NOTES.md) before upgrading 
 
-Warp 10's Quantum is a web application developed to easily deal with the [Warp 10](http://www.warp10.io)
+Warp 10's Quantum is a web application developed to easily deal with the [Warp 10](https://www.warp10.io)
 platform.
 
 Entirely developed as [Polymer](https://www.polymer-project.org/) elements, you will
