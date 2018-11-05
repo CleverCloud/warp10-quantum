@@ -29,6 +29,7 @@ pipeline {
         echo '${STAGE_NAME}'
         sh "rm -fr ${env.WORKSPACE}/build"
         sh "rm -fr ${env.WORKSPACE}/bower_components"
+        sh 'bower cache clean'
         sh 'bower install'
         sh 'bower prune'
         sh 'sed -i -e "s/ready: function() {/ready: function() \\{\\n        this.configuredBackends=[{\'id\':\'dist\',\'label\':\'Local Warp\',\'url\':location.protocol+\'\\/\\/\'+location.hostname+\':8080\\/api\\/v0\',\'execEndpoint\':\'\\/exec\',\'findEndpoint\':\'\\/find\',\'fetchEndpoint\':\'\\/fetch\',\'updateEndpoint\':\'\\/update\',\'deleteEndpoint\':\'\\/delete\',\'headerName\':\'X-Warp10\'}];/" ./src/quantum-app.html'
