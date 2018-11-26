@@ -47,7 +47,7 @@
     "ace-widget": "LostInBrittany/ace-widget#~1.3.5",
     "granite-alert": "LostInBrittany/granite-alert#^1.0.5",
     "granite-spinner": "LostInBrittany/granite-spinner#^2.0.0",
-    "warp10-iron": "senx/warp10-iron#^2.0.3",
+    "warp10-iron": "senx/warp10-iron#^2.0.4",
     "warp10-quantum-elements": "senx/warp10-quantum-elements#^2.0.6",
     "warp10-quantumviz": "senx/warp10-quantumviz#^2.1.4"
   },
